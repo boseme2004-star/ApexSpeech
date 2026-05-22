@@ -1,8 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     package="com.example.apex_speech">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    
     <application
         android:label="apex_speech"
         android:name="${applicationName}"
