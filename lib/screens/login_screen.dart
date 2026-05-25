@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() =>
+      _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState
+    extends State<LoginScreen> {
 
   final TextEditingController emailController =
       TextEditingController();
@@ -15,172 +19,216 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
 
-      body: SingleChildScrollView(
+      body: SafeArea(
 
-        child: Padding(
-          padding: EdgeInsets.all(25),
+        child: SingleChildScrollView(
 
-          child: Form(
+          child: Padding(
+            padding: const EdgeInsets.all(25),
 
-            key: _formKey,
+            child: Form(
 
-            child: Column(
-              children: [
+              key: _formKey,
 
-                SizedBox(height: 100),
+              child: Column(
+                children: [
 
-                Icon(
-                  Icons.mic,
-                  size: 100,
-                  color: Colors.deepPurple,
-                ),
+                  const SizedBox(height: 60),
 
-                SizedBox(height: 20),
-
-                Text(
-                  "Welcome Back",
-
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                  // APP ICON
+                  Icon(
+                    Icons.mic,
+                    size: 100,
+                    color: Colors.deepPurple,
                   ),
-                ),
 
-                SizedBox(height: 10),
+                  const SizedBox(height: 20),
 
-                Text(
-                  "Login to continue",
+                  // TITLE
+                  const Text(
+                    "Welcome Back",
 
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-
-                SizedBox(height: 40),
-
-                // EMAIL
-                TextFormField(
-                  controller: emailController,
-
-                  validator: (value) {
-
-                    if (value == null || value.isEmpty) {
-                      return "Enter your email";
-                    }
-
-                    return null;
-                  },
-
-                  decoration: InputDecoration(
-                    labelText: "Email",
-
-                    prefixIcon: Icon(Icons.email),
-
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(15),
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
 
-                SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
-                // PASSWORD
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
+                  const Text(
+                    "Login to continue",
 
-                  validator: (value) {
-
-                    if (value == null || value.isEmpty) {
-                      return "Enter your password";
-                    }
-
-                    return null;
-                  },
-
-                  decoration: InputDecoration(
-                    labelText: "Password",
-
-                    prefixIcon: Icon(Icons.lock),
-
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(15),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
                   ),
-                ),
 
-                SizedBox(height: 30),
+                  const SizedBox(height: 40),
 
-                // LOGIN BUTTON
-                SizedBox(
-                  width: double.infinity,
+                  // EMAIL FIELD
+                  TextFormField(
+                    controller: emailController,
 
-                  child: ElevatedButton(
+                    keyboardType:
+                        TextInputType.emailAddress,
 
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 18,
-                      ),
+                    validator: (value) {
 
-                      backgroundColor:
-                          Colors.deepPurple,
+                      if (value == null ||
+                          value.isEmpty) {
 
-                      shape: RoundedRectangleBorder(
+                        return "Enter your email";
+                      }
+
+                      return null;
+                    },
+
+                    decoration: InputDecoration(
+
+                      labelText: "Email",
+
+                      prefixIcon:
+                          const Icon(Icons.email),
+
+                      border: OutlineInputBorder(
                         borderRadius:
                             BorderRadius.circular(15),
                       ),
                     ),
+                  ),
 
-                    onPressed: () {
+                  const SizedBox(height: 20),
 
-                      if (_formKey.currentState!
-                          .validate()) {
+                  // PASSWORD FIELD
+                  TextFormField(
 
-                        Navigator.pushReplacementNamed(
-                          context,
-                          '/home',
-                        );
+                    controller: passwordController,
+
+                    obscureText: obscurePassword,
+
+                    validator: (value) {
+
+                      if (value == null ||
+                          value.isEmpty) {
+
+                        return "Enter your password";
                       }
+
+                      return null;
                     },
 
-                    child: Text(
-                      "Login",
+                    decoration: InputDecoration(
 
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
+                      labelText: "Password",
+
+                      prefixIcon:
+                          const Icon(Icons.lock),
+
+                      suffixIcon: IconButton(
+
+                        icon: Icon(
+
+                          obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+
+                        onPressed: () {
+
+                          setState(() {
+
+                            obscurePassword =
+                                !obscurePassword;
+                          });
+                        },
+                      ),
+
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(15),
                       ),
                     ),
                   ),
-                ),
 
-                SizedBox(height: 20),
+                  const SizedBox(height: 30),
 
-                TextButton(
+                  // LOGIN BUTTON
+                  SizedBox(
 
-                  onPressed: () {
+                    width: double.infinity,
 
-                    Navigator.pushNamed(
-                      context,
-                      '/signup',
-                    );
+                    child: ElevatedButton(
 
-                  },
+                      style:
+                          ElevatedButton.styleFrom(
 
-                  child: Text(
-                    "Don't have an account? Sign up",
+                        backgroundColor:
+                            Colors.deepPurple,
+
+                        padding:
+                            const EdgeInsets.symmetric(
+                          vertical: 18,
+                        ),
+
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(15),
+                        ),
+                      ),
+
+                      onPressed: () {
+
+                        if (_formKey.currentState!
+                            .validate()) {
+
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/home',
+                          );
+                        }
+                      },
+
+                      child: const Text(
+
+                        "Login",
+
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
 
-              ],
+                  const SizedBox(height: 20),
+
+                  // SIGNUP BUTTON
+                  TextButton(
+
+                    onPressed: () {
+
+                      Navigator.pushReplacementNamed(
+                        context,
+                        '/signup',
+                      );
+                    },
+
+                    child: const Text(
+                      "Don't have an account? Sign up",
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,11 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-import 'signup_screen.dart';
-
 class SplashScreen extends StatefulWidget {
-
   const SplashScreen({super.key});
 
   @override
@@ -18,25 +14,19 @@ class _SplashScreenState
 
   @override
   void initState() {
-
     super.initState();
 
     Timer(
-
-      const Duration(seconds: 2),
-
+      const Duration(seconds: 10),
       () {
 
-        Navigator.pushReplacement(
+        if (mounted) {
 
-          context,
-
-          MaterialPageRoute(
-
-            builder: (context) =>
-                const SignupScreen(),
-          ),
-        );
+          Navigator.pushReplacementNamed(
+            context,
+            '/signup',
+          );
+        }
       },
     );
   }
@@ -46,8 +36,7 @@ class _SplashScreenState
 
     return Scaffold(
 
-      backgroundColor:
-          Colors.deepPurple,
+      backgroundColor: Colors.deepPurple,
 
       body: Center(
 
@@ -58,51 +47,45 @@ class _SplashScreenState
 
           children: [
 
+            // APP ICON
             const Icon(
-
-              Icons.mic,
-
+              Icons.record_voice_over,
               size: 100,
-
               color: Colors.white,
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
+            // APP NAME
             const Text(
-
-              "Welcome to\nApex Speech",
+              "Welcome to Apex Speech",
 
               textAlign: TextAlign.center,
 
               style: TextStyle(
-
                 color: Colors.white,
-
-                fontSize: 34,
-
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
 
+            // SUBTITLE
             const Text(
-
-              "Train your voice with confidence",
+              "Improve your speaking confidence",
 
               textAlign: TextAlign.center,
 
               style: TextStyle(
-
                 color: Colors.white70,
-
-                fontSize: 18,
+                fontSize: 16,
               ),
             ),
 
             const SizedBox(height: 40),
 
+            // LOADING INDICATOR
             const CircularProgressIndicator(
               color: Colors.white,
             ),
