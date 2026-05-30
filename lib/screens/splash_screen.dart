@@ -17,7 +17,7 @@ class _SplashScreenState
     super.initState();
 
     Timer(
-      const Duration(seconds: 10),
+      const Duration(seconds: 20),
       () {
 
         if (mounted) {

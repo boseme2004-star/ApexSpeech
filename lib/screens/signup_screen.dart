@@ -50,7 +50,7 @@ class _SignupScreenState
                 const Icon(
                   Icons.person_add,
                   size: 100,
-                  color: Colors.deepPurple,
+                  color: Color.fromARGB(255, 136, 127, 151),
                 ),
 
                 const SizedBox(height: 20),
@@ -93,12 +93,19 @@ class _SignupScreenState
                       return "Enter username";
                     }
 
+                    if (value.length < 6) {
+                      return 'Username must be at least 6 characters';
+                    }
+                  
+
                     // ONLY LETTERS & NUMBERS
                     if (!RegExp(r'^[a-zA-Z0-9]+$')
                         .hasMatch(value)) {
 
                       return
                           "Only letters and numbers allowed";
+
+                    
                     }
 
                     return null;
@@ -238,7 +245,7 @@ class _SignupScreenState
                         ElevatedButton.styleFrom(
 
                       backgroundColor:
-                          Colors.deepPurple,
+                          const Color.fromARGB(255, 221, 150, 206),
 
                       padding:
                           const EdgeInsets.symmetric(
@@ -253,6 +260,11 @@ class _SignupScreenState
                     ),
 
                     onPressed: () {
+
+                      Navigator.pushReplacementNamed(
+                      context,
+                      '/home',
+                    );
 
                       if (_formKey.currentState!
                           .validate()) {
@@ -276,7 +288,7 @@ class _SignupScreenState
 
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 22, 22, 22),
                       ),
                     ),
                   ),
