@@ -5,10 +5,12 @@ class RecordingButton extends StatelessWidget {
     super.key,
     required this.isRecording,
     required this.onPressed,
+    this.isDisabled = false,
   });
 
   final bool isRecording;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +18,20 @@ class RecordingButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: isRecording ? Colors.red : Colors.deepPurple,
+          backgroundColor: isDisabled
+              ? Colors.grey
+              : isRecording
+                  ? Colors.red
+                  : const Color.fromARGB(255, 204, 135, 195),
           padding: const EdgeInsets.symmetric(vertical: 18),
         ),
         onPressed: onPressed,
         child: Text(
-          isRecording ? 'Stop Recording' : 'Start Recording',
+          isDisabled
+              ? 'Transcribing...'
+              : isRecording
+                  ? 'Stop Recording'
+                  : 'Start Recording',
           style: const TextStyle(fontSize: 18, color: Colors.white),
         ),
       ),

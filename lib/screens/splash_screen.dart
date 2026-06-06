@@ -24,7 +24,7 @@ class _SplashScreenState
 
           Navigator.pushReplacementNamed(
             context,
-            '/signup',
+            '/login',
           );
         }
       },
@@ -36,7 +36,7 @@ class _SplashScreenState
 
     return Scaffold(
 
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: const Color.fromARGB(255, 158, 138, 192),
 
       body: Center(
 
@@ -51,7 +51,7 @@ class _SplashScreenState
             const Icon(
               Icons.record_voice_over,
               size: 100,
-              color: Colors.white,
+              color: Color.fromARGB(255, 196, 128, 179),
             ),
 
             const SizedBox(height: 20),

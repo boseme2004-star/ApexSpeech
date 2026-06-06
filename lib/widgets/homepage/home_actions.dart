@@ -53,7 +53,7 @@ class HomeActionButtons extends StatelessWidget {
             child: const Padding(
               padding: EdgeInsets.all(15),
               child: Text(
-                'View Recordings',
+                'View Transcripts',
                 style: TextStyle(fontSize: 18),
               ),
             ),

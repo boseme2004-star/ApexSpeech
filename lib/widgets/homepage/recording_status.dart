@@ -16,7 +16,7 @@ class RecordingStatusIndicator extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: isRecording ? Colors.red.shade100 : Colors.deepPurple.shade100,
+            color: isRecording ? Colors.red.shade100 : const Color.fromARGB(255, 184, 170, 211),
             shape: BoxShape.circle,
           ),
           child: Icon(

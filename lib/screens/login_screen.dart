@@ -46,8 +46,8 @@ class _LoginScreenState
                   Icon(
                     Icons.mic,
                     size: 100,
-                    color: Colors.deepPurple,
-                  ),
+                    color: const Color.fromARGB(255, 196, 128, 179)),
+                  
 
                   const SizedBox(height: 20),
 
@@ -89,6 +89,12 @@ class _LoginScreenState
                         return "Enter your email";
                       }
 
+                      if (!RegExp(r'^[w-\.]+@([w-]+.)+[w-]{2,4}$')
+                          .hasMatch(value)) {
+
+                        return "Enter a valid email address";
+                      }
+
                       return null;
                     },
 
@@ -121,6 +127,17 @@ class _LoginScreenState
                           value.isEmpty) {
 
                         return "Enter your password";
+                      }
+
+                      if (value.length < 6) {
+
+                        return "Password must be at least 6 characters";
+                      }
+
+                      if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$')
+                          .hasMatch(value)) {
+
+                        return "Password must contain letters and numbers";
                       }
 
                       return null;
@@ -172,7 +189,7 @@ class _LoginScreenState
                           ElevatedButton.styleFrom(
 
                         backgroundColor:
-                            Colors.deepPurple,
+                            const Color.fromARGB(255, 158, 138, 192),
 
                         padding:
                             const EdgeInsets.symmetric(
