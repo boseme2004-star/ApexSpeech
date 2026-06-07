@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/database_helper.dart';
+import '../services/session_manager.dart';
 import 'about_us_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,6 +34,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         goalController.text = profile['goal'] ?? '';
         aboutController.text = profile['about'] ?? '';
       });
+    } else {
+      // Pre-fill email and username from session if available
+      if (SessionManager.isLoggedIn) {
+        setState(() {
+          nameController.text = SessionManager.username ?? '';
+          emailController.text = SessionManager.email ?? '';
+        });
+      }
     }
   }
 
@@ -55,9 +64,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     setState(() => isSaving = false);
 
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile saved successfully')),
+      const SnackBar(
+        content: Text('Profile saved successfully'),
+        backgroundColor: Colors.green,
+      ),
     );
+  }
+
+  Future<void> logout() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await SessionManager.clear();
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   @override
@@ -83,12 +123,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             const SizedBox(height: 20),
 
-            // Avatar
-            const Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Color.fromARGB(255, 176, 159, 201),
-                child: Icon(Icons.person, size: 60, color: Colors.white),
+            // Avatar and username
+            Center(
+              child: Column(
+                children: [
+                  const CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Color.fromARGB(255, 176, 159, 201),
+                    child: Icon(
+                      Icons.person,
+                      size: 60,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  if (SessionManager.isLoggedIn)
+                    Text(
+                      '@${SessionManager.username ?? ''}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                ],
               ),
             ),
             const SizedBox(height: 30),
@@ -96,9 +154,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Profile Info Section
             const Text(
               'Profile Info',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 15),
+
             TextField(
               controller: nameController,
               decoration: InputDecoration(
@@ -110,8 +172,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 15),
+
             TextField(
               controller: emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 labelText: 'Email',
                 prefixIcon: const Icon(Icons.email),
@@ -125,7 +189,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // About You Section
             const Text(
               'About You',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             const Text(
@@ -133,6 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontSize: 13, color: Colors.grey),
             ),
             const SizedBox(height: 15),
+
             TextField(
               controller: aboutController,
               maxLines: 3,
@@ -147,6 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 15),
+
             TextField(
               controller: goalController,
               maxLines: 3,
@@ -204,9 +273,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
                         'Save Profile',
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
                       ),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            // Logout Button
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.logout, color: Colors.red),
+                label: const Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 16, color: Colors.red),
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.all(15),
+                  side: const BorderSide(color: Colors.red),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: logout,
               ),
             ),
             const SizedBox(height: 20),
